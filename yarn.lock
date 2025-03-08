@@ -5,6 +5,17 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
+"@apidevtools/json-schema-ref-parser@npm:^11.1.0":
+  version: 11.9.3
+  resolution: "@apidevtools/json-schema-ref-parser@npm:11.9.3"
+  dependencies:
+    "@jsdevtools/ono": "npm:^7.1.3"
+    "@types/json-schema": "npm:^7.0.15"
+    js-yaml: "npm:^4.1.0"
+  checksum: 10c0/5745813b3d964279f387677b7a903ba6634cdeaf879ff3a331a694392cbc923763f398506df190be114f2574b8b570baab3e367c2194bb35f50147ff6cf27d7a
+  languageName: node
+  linkType: hard
+
 "@asteasolutions/zod-to-openapi@npm:^7.2.0":
   version: 7.3.0
   resolution: "@asteasolutions/zod-to-openapi@npm:7.3.0"
@@ -794,6 +805,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jsdevtools/ono@npm:^7.1.3":
+  version: 7.1.3
+  resolution: "@jsdevtools/ono@npm:7.1.3"
+  checksum: 10c0/a9f7e3e8e3bc315a34959934a5e2f874c423cf4eae64377d3fc9de0400ed9f36cb5fd5ebce3300d2e8f4085f557c4a8b591427a583729a87841fda46e6c216b9
+  languageName: node
+  linkType: hard
+
 "@npmcli/agent@npm:^3.0.0":
   version: 3.0.0
   resolution: "@npmcli/agent@npm:3.0.0"
@@ -1147,6 +1165,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ai-sarcasm-generator@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "ai-sarcasm-generator@workspace:."
+  dependencies:
+    "@eslint/js": "npm:^9.22.0"
+    "@scalar/hono-api-reference": "npm:^0.5.183"
+    chanfana: "npm:^2.0.2"
+    eslint: "npm:^9.22.0"
+    globals: "npm:^16.0.0"
+    hono: "npm:^4.4.7"
+    hono-openapi: "npm:^0.4.6"
+    vitest: "npm:^3.0.8"
+    wrangler: "npm:^3.114.0"
+    zod: "npm:^3.23.8"
+  languageName: unknown
+  linkType: soft
+
 "ajv@npm:^6.12.4":
   version: 6.12.6
   resolution: "ajv@npm:6.12.6"
@@ -1328,21 +1363,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cloudflare-workers-openapi@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "cloudflare-workers-openapi@workspace:."
-  dependencies:
-    "@eslint/js": "npm:^9.22.0"
-    "@scalar/hono-api-reference": "npm:^0.5.183"
-    chanfana: "npm:^2.0.2"
-    eslint: "npm:^9.22.0"
-    globals: "npm:^16.0.0"
-    hono: "npm:^4.4.7"
-    vitest: "npm:^3.0.8"
-    wrangler: "npm:^3.114.0"
-    zod: "npm:^3.23.8"
-  languageName: unknown
-  linkType: soft
+"clone@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "clone@npm:2.1.2"
+  checksum: 10c0/ed0601cd0b1606bc7d82ee7175b97e68d1dd9b91fd1250a3617b38d34a095f8ee0431d40a1a611122dcccb4f93295b4fdb94942aa763392b5fe44effa50c2d5e
+  languageName: node
+  linkType: hard
 
 "color-convert@npm:^2.0.1":
   version: 2.0.1
@@ -1999,6 +2025,59 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hono-openapi@npm:^0.4.6":
+  version: 0.4.6
+  resolution: "hono-openapi@npm:0.4.6"
+  dependencies:
+    json-schema-walker: "npm:^2.0.0"
+  peerDependencies:
+    "@hono/arktype-validator": ^2.0.0
+    "@hono/effect-validator": ^1.2.0
+    "@hono/typebox-validator": ^0.2.0 || ^0.3.0
+    "@hono/valibot-validator": ^0.5.1
+    "@hono/zod-validator": ^0.4.1
+    "@sinclair/typebox": ^0.34.9
+    "@valibot/to-json-schema": ^1.0.0-beta.3
+    arktype: ^2.0.0-rc.25
+    effect: ^3.11.3
+    hono: ^4.6.13
+    openapi-types: ^12.1.3
+    valibot: ^1.0.0-beta.9
+    zod: ^3.23.8
+    zod-openapi: ^4.0.0
+  peerDependenciesMeta:
+    "@hono/arktype-validator":
+      optional: true
+    "@hono/effect-validator":
+      optional: true
+    "@hono/typebox-validator":
+      optional: true
+    "@hono/valibot-validator":
+      optional: true
+    "@hono/zod-validator":
+      optional: true
+    "@sinclair/typebox":
+      optional: true
+    "@valibot/to-json-schema":
+      optional: true
+    arktype:
+      optional: true
+    effect:
+      optional: true
+    hono:
+      optional: true
+    openapi-types:
+      optional: true
+    valibot:
+      optional: true
+    zod:
+      optional: true
+    zod-openapi:
+      optional: true
+  checksum: 10c0/84436d2427b4440547ac5041d963de2717ed9fc33f07492f8b831568fbb0029f2ce354309d24126ccb962f7d7c9cda4d31f38d40804ab3ede4a4a01a3d3a037f
+  languageName: node
+  linkType: hard
+
 "hono@npm:^4.4.7":
   version: 4.7.4
   resolution: "hono@npm:4.7.4"
@@ -2169,6 +2248,16 @@ __metadata:
   version: 0.4.1
   resolution: "json-schema-traverse@npm:0.4.1"
   checksum: 10c0/108fa90d4cc6f08243aedc6da16c408daf81793bf903e9fd5ab21983cda433d5d2da49e40711da016289465ec2e62e0324dcdfbc06275a607fe3233fde4942ce
+  languageName: node
+  linkType: hard
+
+"json-schema-walker@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "json-schema-walker@npm:2.0.0"
+  dependencies:
+    "@apidevtools/json-schema-ref-parser": "npm:^11.1.0"
+    clone: "npm:^2.1.2"
+  checksum: 10c0/be257826bbaa615349dbf6594826403938c50a9906e52407fcd8191b4f31cfcf22310efbd762382e8c9cbdcc6a75d4f3f9348c3bd6763a7b0eb4f70009b92f6d
   languageName: node
   linkType: hard
 
