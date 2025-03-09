@@ -1,13 +1,15 @@
 import { Hono } from 'hono';
 import { getSarcasticComments, addOneSarcasticComment, likeSarcasticComment } from '../dao/sarcasmDAO';
+import { generateComment, generateCategory } from '../services/ai';
 import { describeRoute } from 'hono-openapi';
+import { HTTPException } from 'hono/http-exception'
 
 
 const sarcasm = new Hono();
 /**
  * Get all 
  */
-sarcasm.get("/",describeRoute({
+sarcasm.get("/", describeRoute({
     description: 'Get all sarcast comments',
     summary: "Get Sarcastic Comments",
     tags: ["Sarcasm"],
@@ -20,7 +22,7 @@ sarcasm.get("/",describeRoute({
                     properties: {
                         id: {
                             description: 'The unique identifier of the sarcastic comment',
-                            example: crypto.randomUUID(),
+                            example: '1234-fad23-adsf32-adfda23-adfs',
                             type: 'string',
                         },
                         prompt: {
@@ -40,7 +42,7 @@ sarcasm.get("/",describeRoute({
                         },
                         likes: {
                             description: 'The number of likes for the sarcastic comment',
-                            example: crypto.randomUUID(),
+                            example: 1,
                             type: 'number',
                         },
                         created_ts: {
@@ -67,7 +69,19 @@ sarcasm.get("/",describeRoute({
 /**
  * Add Like 
  */
-sarcasm.patch("/:id",async(c)=>{
+sarcasm.patch("/:id",describeRoute({
+    summary: "Like Sarcastic comment",
+    description: "Increment the likes on a sarcastic comment",
+    parameters: {
+        in: 'path',
+        name: 'id',
+        schema: {
+            type: 'string',
+        }, 
+        required: true,
+        description: 'This is the unique id of the sarcastic comment',
+    }
+}),async(c)=>{
     const id = await c.req.id;
     const results = await likeSarcasticComment(id,c.env);
     return results;
@@ -76,11 +90,38 @@ sarcasm.patch("/:id",async(c)=>{
 /**
  * Create one
  */
-sarcasm.post("/",async(c)=>{
+sarcasm.post("/generate",async(c)=>{
     const body = await c.req.json();
-    console.log(`Sarcastic comment created ${JSON.stringify(body)}`);
+    const { prompt } = body
+    console.log(`Sarcastic comment requested ${JSON.stringify(prompt)}`);
 
-    const results = addOneSarcasticComment(body,c.env)
+    try { 
+        const comment = await generateComment(prompt,c.env);
+        console.log(`Comment ${JSON.stringify(comment)}`);
+        const category = await generateCategory(prompt,c.env);
+        const sarcasm = {
+            id: crypto.randomUUID(),
+            prompt: prompt,
+            category: category.response.split(','),
+            sarcastic_comment: comment.response,
+            likes: 0
+        }
+        const results = await addOneSarcasticComment(sarcasm,c.env)
+        return c.json({comment,category});
+    }catch(error){
+        console.log(`Error message received ${JSON.stringify(error.message)}`);
+        throw HTTPException({message: `error processing request for sarcasm.`});
+    }
+
+})
+
+sarcasm.notFound(async (c)=>{
+	return c.json({ message: `The path you requested, ${c.req.path} could not be located. Try again.`}, 404 );
+})
+
+
+sarcasm.onError(async (c)=>{
+	return c.json({ message: `There was a server error processing your request. Try again later`}, 500 );
 })
 
 export default sarcasm;

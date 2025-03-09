@@ -7,20 +7,19 @@
  */
 export async function addOneSarcasticComment(sarcasm, env) {
     if (!env.DB) throw new Error("Database Definition not defined");
-    return new Promise(async (resolve, reject) => {
-        try {
-            const query = `INSERT INTO SARCASM (id, prompt,category,sarcastic_comment,likes) values (?,?,?,?,?) `;
-            if (!sarcasm.id) sarcasm.id = crypto.randomUUID();
+    console.log(`sarcasm insert input =>${JSON.stringify(sarcasm)}`)
+    try {
+        const query = `INSERT INTO SARCASM (id, prompt,category,sarcastic_comment,likes) values (?,?,?,?,?) `;
+        if (!sarcasm.id) sarcasm.id = crypto.randomUUID();
 
-            const results = query.bind(sarcasm.id, sarcasm.prompt, sarcasm.category, sarcasm_comment, likes).run();
-
-            if (!results.success) throw new Error('Error querying database');
-            return resolve(results);
-        } catch (error) {
-            console.error(`Error inserting data`)
-            throw new Error(`Unable to query table`);
-        }
-    })
+        const results = await query.bind(sarcasm.id, sarcasm.prompt, JSON.stringify(sarcasm.category), sarcasm.sarcastic_comment, sarcasm.likes).run();
+        console.log(`results of input data => ${JSON.stringify(results)}`);
+        if (!results.success) throw new Error('Error querying database');
+        return resolve(results);
+    } catch (error) {
+        console.error(`Error inserting data ${error}`)
+        throw new Error({ error, message: "Unable to query table" });
+    }
 }
 
 /**
