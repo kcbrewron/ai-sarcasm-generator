@@ -11,7 +11,7 @@ export async function addOneSarcasticComment(sarcasm, env) {
     try {
         const query = `INSERT INTO SARCASM (id, prompt,category,sarcastic_comment,likes) values (?,?,?,?,?) `;
         if (!sarcasm.id) sarcasm.id = crypto.randomUUID();
-        let categories;
+        let categories=[];
         sarcasm.category.forEach((cat) => {
             categories.push(cat.trim().toLowerCase());
         })
