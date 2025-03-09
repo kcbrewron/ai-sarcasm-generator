@@ -4,10 +4,11 @@ import { apiReference } from '@scalar/hono-api-reference';
 import { openAPISpecs } from 'hono-openapi'
 import sarcasm from './routes/sarcasm';
 import { logger } from 'hono/logger'
+import { HTTPException } from 'hono/http-exception'
 
 // Start a Hono app
 const app = new Hono();
-app.use(logger());
+//app.use(logger());
 app.route("/api/sarcasm", sarcasm);
 
 
@@ -36,13 +37,17 @@ app.get(
 	})
 )
 
-app.notFound(async (c)=>{
-	return c.json({ message: `The path you requested, ${c.req.path} could not be located. Try again.`}, 404 );
+app.notFound(async (c) => {
+	return c.json({ message: `The path you requested, ${c.req.path} could not be located. Try again.` }, 404);
 })
 
 
-app.onError(async (c)=>{
-	return c.json({ message: `There was a server error processing your request. Try again later`}, 500 );
+
+app.onError((err, c) => {
+	if (err instanceof HTTPException) {
+	  // Get the custom response
+	  return err.getResponse()
+	}
 })
 // Export the Hono app
 export default app;

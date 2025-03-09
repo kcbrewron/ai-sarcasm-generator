@@ -58,34 +58,52 @@ sarcasm.get("/", describeRoute({
         }
     },
 }), async (c)=>{
+    try {
+        
     const results = await getSarcasticComments(c.env)
-    const processedResults = results;
 
     /**
      * Process results
      */
-    return  processedResults;
+    return  c.json({results});
+
+    }catch(error){
+        console.log(error);
+        const errorResponse = new Resposne(JSON.stringify({message: `Error increasing the likes for the request.`}, {status: 500}))
+        throw new HTTPException(500,{res: errorResponse});   
+    }
 })
 /**
  * Add Like 
  */
-sarcasm.patch("/:id",describeRoute({
+sarcasm.patch("/:id", describeRoute({
     summary: "Like Sarcastic comment",
     description: "Increment the likes on a sarcastic comment",
-    parameters: {
-        in: 'path',
-        name: 'id',
-        schema: {
-            type: 'string',
-        }, 
-        required: true,
-        description: 'This is the unique id of the sarcastic comment',
-    }
-}),async(c)=>{
-    const id = await c.req.id;
-    const results = await likeSarcasticComment(id,c.env);
-    return results;
-})
+    parameters: [
+        {
+            in: 'path',
+            name: 'id',
+            schema: {
+                type: 'string',
+            }, 
+            required: true,
+            description: 'This is the unique id of the sarcastic comment',
+        }
+    ]
+}), async (c) => {
+    try{
+        const id = await c.req.param("id");;
+        console.log(`Request on patch ${JSON.stringify(await c.req)}`)
+        console.log(`ID received: ${id}`);
+        const results = await likeSarcasticComment(id, c.env);
+        return c.json({results});
+    }catch(error){
+        console.log(error);
+        const errorResponse = new Resposne(JSON.stringify({message: `Error increasing the likes for the request.`}, {status: 500}))
+        throw new HTTPException(500,{res: errorResponse});   
+     }
+    
+});
 
 /**
  * Create one
@@ -96,6 +114,7 @@ sarcasm.post("/generate",async(c)=>{
     console.log(`Sarcastic comment requested ${JSON.stringify(prompt)}`);
 
     try { 
+
         const comment = await generateComment(prompt,c.env);
         console.log(`Comment ${JSON.stringify(comment)}`);
         const category = await generateCategory(prompt,c.env);
@@ -106,22 +125,13 @@ sarcasm.post("/generate",async(c)=>{
             sarcastic_comment: comment.response,
             likes: 0
         }
-        const results = await addOneSarcasticComment(sarcasm,c.env)
-        return c.json({comment,category});
+        await addOneSarcasticComment(sarcasm,c.env);
+        return c.json({sarcasm});
     }catch(error){
-        console.log(`Error message received ${JSON.stringify(error.message)}`);
-        throw HTTPException({message: `error processing request for sarcasm.`});
+        console.log(`Error message received ${JSON.stringify(error)}`);
+        const errorResponse = new Response(JSON.stringify({ message: `An error occured processing the request.` }),{status: 500})
+        throw new HTTPException(500,{res: errorResponse});
     }
-
-})
-
-sarcasm.notFound(async (c)=>{
-	return c.json({ message: `The path you requested, ${c.req.path} could not be located. Try again.`}, 404 );
-})
-
-
-sarcasm.onError(async (c)=>{
-	return c.json({ message: `There was a server error processing your request. Try again later`}, 500 );
 })
 
 export default sarcasm;

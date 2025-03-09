@@ -15,7 +15,8 @@ node_modules
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Runtime data
-
+.pnp.cjs
+.pnp.loader.mjs
 pids
 _.pid
 _.seed
