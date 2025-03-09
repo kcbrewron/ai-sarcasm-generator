@@ -12,8 +12,8 @@ export async function addOneSarcasticComment(sarcasm, env) {
         const query = `INSERT INTO SARCASM (id, prompt,category,sarcastic_comment,likes) values (?,?,?,?,?) `;
         if (!sarcasm.id) sarcasm.id = crypto.randomUUID();
         let categories;
-        sarcasm.sarcastic_comment.forEach((comment) => {
-            categories.push(comment.trim());
+        sarcasm.categories.forEach((category) => {
+            categories.push(category.trim());
         })
         console.log(`trimmed out Comments ${JSON.stringify(categories)}`);
         const results = await env.DB.prepare(query).bind(sarcasm.id,

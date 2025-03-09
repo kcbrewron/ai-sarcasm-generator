@@ -61,7 +61,7 @@ sarcasm.get("/", describeRoute({
     try {
         
     const results = await getSarcasticComments(c.env)
-
+    console.log(`GET all => size=${results.length}`)
     /**
      * Process results
      */
